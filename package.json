@@ -1,0 +1,12 @@
+{
+  "name": "bubble",
+  "version": "1.0.0",
+  "description": "Bubble is a simple chat application for any operating system",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron --enable-transparent-visuals .",
+    "build": "electron-builder"
+  },
+  "author": "Rakibul Hasan",
+  "license": "ISC"
+}
