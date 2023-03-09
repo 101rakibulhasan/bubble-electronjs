@@ -1,10 +1,11 @@
-const {app,BrowserWindow,Menu, ipcMain} = require('electron')
+const {app,BrowserWindow,Tray, Menu, ipcMain, globalShortcut} = require('electron')
+const path = require('path');
 const electron = require('electron');
 
 var WIDTH = 320;
 var HEIGHT = 580;
 var OFFSIDE_X = 40;
-var OFFSIDE_Y = 10;
+var OFFSIDE_Y = 20;
 
 ipcMain.on("msg",(event,data)=>{
     console.warn(data)
@@ -19,25 +20,47 @@ function createWindows()
         frame: false,
         transparent: true,
         //backgroundColor: "#ff0000",
-        //alwaysOnTop:true,
+        alwaysOnTop:true,
         title: "Awesoem",
+        autoHideMenuBar: true,
+        minimizable:true,
+        icon : "img/icon.png",
         webPreferences:{
-            nodeIntegration:true
+            nodeIntegration:true,
+            contextIsolation: false,
+            preload : path.join(__dirname, "index.js"),
         },
-        resizable:false,
-        //minimizable:false,
+        
 
     })
 
-    //let child = new BrowserWindow({parent:win})
-    //child.loadFile("child.html");
-    //child.show();
     win.loadFile("index.html");
-    //win.setIgnoreMouseEvents(true);
-    //win.setFocusable(false);
-    //win.webContents.openDevTools();
-    //ctrl shift i
+
+    //TRAY
+    tray = new Tray('img/icon.png')
+    tray.setToolTip('Bubble is currently running...')
+    tray.on("click",()=>{
+        if(!win.isVisible())
+        {
+            win.show()
+        }
+    })
+
+    //TRAY MENU
+    let template = [{label:'Exit'}]
+    let contextMenu = Menu.buildFromTemplate(template)
+    tray.setContextMenu(contextMenu)
+
+    globalShortcut.register("CommandOrControl+Super+X",()=>{
+        win.show()
+    })
+
+    ipcMain.on('minimize', (event,data) => {
+        win.minimize();
+      })
 
 }
+
+
 
 app.whenReady().then(createWindows)
