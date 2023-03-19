@@ -10,6 +10,7 @@ var OFFSIDE_Y = 20;
 ipcMain.on("msg",(event,data)=>{
     console.warn(data)
 })
+
 function createWindows()
 {
     const win = new BrowserWindow({
@@ -60,7 +61,5 @@ function createWindows()
       })
 
 }
-
-
 
 app.whenReady().then(createWindows)
