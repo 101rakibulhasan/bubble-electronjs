@@ -1,6 +1,7 @@
 const {app,BrowserWindow,Tray, Menu, ipcMain, globalShortcut} = require('electron')
 const path = require('path');
 const electron = require('electron');
+const data = require('./data')
 
 var WIDTH = 320;
 var HEIGHT = 580;
